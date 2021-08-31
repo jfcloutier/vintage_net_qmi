@@ -4,7 +4,7 @@ defmodule VintageNetQMI.Connectivity do
   use GenServer
 
   alias VintageNet.PowerManager.PMControl
-  alias VintageNet.RouteManager
+  alias VintageNet.{PropertyTable, RouteManager}
 
   @typedoc """
   Connectivity server initial arguments
@@ -81,6 +81,8 @@ defmodule VintageNetQMI.Connectivity do
       |> Map.put(:serving_system?, serving_system_connected?(serving_system))
       |> update_connection_status()
 
+    update_cell_id(serving_system, state)
+
     {:noreply, new_state}
   end
 
@@ -91,6 +93,14 @@ defmodule VintageNetQMI.Connectivity do
       |> update_connection_status()
 
     {:noreply, new_state}
+  end
+
+  defp update_cell_id(%{cell_id: nil}, _state) do
+    :ok
+  end
+
+  defp update_cell_id(%{cell_id: cell_id}, state) do
+    PropertyTable.put(VintageNet, ["interface", state.ifname, "mobile", "cell_id"], cell_id)
   end
 
   @impl GenServer
