@@ -49,9 +49,10 @@ defmodule VintageNetQMI.Connection do
     ifname = Keyword.fetch!(args, :ifname)
     providers = Keyword.fetch!(args, :service_providers)
     radio_technologies = Keyword.get(args, :radio_technologies)
-    roaming_preference = Keyword.get(args, :roaming_preference, :off)
+    roaming = Keyword.get(args, :roaming)
     VintageNet.subscribe(["interface", ifname, "mobile", "iccid"])
     iccid = VintageNet.get(["interface", ifname, "mobile", "iccid"])
+    configuration = %{Configuration.new() | roaming_set: roaming != nil}
 
     state =
       %{
@@ -61,8 +62,8 @@ defmodule VintageNetQMI.Connection do
         iccid: iccid,
         connect_retry_interval: 30_000,
         radio_technologies: radio_technologies,
-        roaming_preference: roaming_preference,
-        configuration: Configuration.new()
+        roaming: roaming,
+        configuration: configuration
       }
       |> try_to_configure_modem()
       |> maybe_start_try_to_connect_timer()
@@ -99,11 +100,11 @@ defmodule VintageNetQMI.Connection do
     )
   end
 
-  defp try_run_configuration(:roaming_preference, state) do
-    Logger.warn("[VintageNetQMI] try_run_configuration :roaming_preference #{inspect(state)}")
+  defp try_run_configuration(:roaming_set, state) do
+    Logger.warn("[VintageNetQMI] try_run_configuration :roaming_set #{inspect(state)}")
 
     NetworkAccess.set_system_selection_preference(state.qmi,
-      roaming_preference: state.roaming_preference
+      roaming_preference: state.roaming
     )
   end
 
