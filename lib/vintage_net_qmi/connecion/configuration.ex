@@ -43,6 +43,8 @@ defmodule VintageNetQMI.Connection.Configuration do
   """
   @type configuration_callback() :: (configuration_setting() -> :ok | {:error, atom()})
 
+  require Logger
+
   @doc """
   Create a new connection configuration with all fields marked as not configured
   """
@@ -56,6 +58,8 @@ defmodule VintageNetQMI.Connection.Configuration do
   @spec run_configurations(t(), configuration_callback()) ::
           {:ok, t()} | {:error, atom(), configuration_setting(), t()}
   def run_configurations(configuration, func) do
+    Logger.warn("[VintageNetQMI] run_configurations #{inspect(configuration)}")
+
     config_items =
       configuration
       |> Enum.filter(fn {_, is_configured} -> !is_configured end)
@@ -71,6 +75,10 @@ defmodule VintageNetQMI.Connection.Configuration do
     Enum.reduce_while(config_settings, configuration, fn setting, config ->
       case callback.(setting) do
         {:error, reason} ->
+          Logger.warn(
+            "[VintageNetQMI] ERROR do_run_configurations #{inspect(config_settings)}: #{inspect(reason)}"
+          )
+
           {:halt, {:error, reason, setting, config}}
 
         _other ->

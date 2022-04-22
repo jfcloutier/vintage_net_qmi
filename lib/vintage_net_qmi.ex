@@ -112,6 +112,11 @@ defmodule VintageNetQMI do
   end
 
   @impl VintageNet.Technology
+  @spec to_raw_config(
+          binary,
+          %{:type => VintageNetQMI, :vintage_net_qmi => map, optional(any) => any},
+          any
+        ) :: VintageNet.Interface.RawConfig.t()
   def to_raw_config(
         ifname,
         %{type: __MODULE__} = config,
