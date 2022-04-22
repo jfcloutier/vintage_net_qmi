@@ -97,15 +97,8 @@ defmodule VintageNetQMI.Connection do
 
   defp try_run_configuration(:radio_technologies_set, state) do
     NetworkAccess.set_system_selection_preference(state.qmi,
-      mode_preference: state.radio_technologies
-    )
-  end
-
-  defp try_run_configuration(:roaming_set, state) do
-    Logger.warn("[VintageNetQMI] try_run_configuration :roaming_set #{inspect(state)}")
-
-    NetworkAccess.set_system_selection_preference(state.qmi,
-      roaming_preference: state.roaming
+      mode_preference: state.radio_technologies,
+      roaming_preference: :any
     )
   end
 
