@@ -24,8 +24,7 @@ defmodule VintageNetQMI.Connection.Configuration do
   """
   @type t() :: %{
           reporting_connection_stats: boolean(),
-          radio_technologies_set: boolean(),
-          roaming_set: boolean()
+          radio_technologies_set: boolean()
         }
 
   @type configuration_setting() ::
@@ -50,7 +49,7 @@ defmodule VintageNetQMI.Connection.Configuration do
   """
   @spec new() :: t()
   def new() do
-    %{reporting_connection_stats: false, radio_technologies_set: false, roaming_set: false}
+    %{reporting_connection_stats: false, radio_technologies_set: false}
   end
 
   @doc """
