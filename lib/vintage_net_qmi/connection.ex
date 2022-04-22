@@ -50,7 +50,7 @@ defmodule VintageNetQMI.Connection do
     ifname = Keyword.fetch!(args, :ifname)
     providers = Keyword.fetch!(args, :service_providers)
     radio_technologies = Keyword.get(args, :radio_technologies)
-    roaming = if Keyword.get(args, :roaming, false), do: :on, else: :off
+    roaming = if Keyword.get(args, :roaming, false), do: :not_off, else: :off
     VintageNet.subscribe(["interface", ifname, "mobile", "iccid"])
     iccid = VintageNet.get(["interface", ifname, "mobile", "iccid"])
     configuration = Configuration.new()
