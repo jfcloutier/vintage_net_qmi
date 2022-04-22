@@ -71,6 +71,8 @@ defmodule VintageNetQMI.Connection do
   end
 
   defp try_to_configure_modem(state) do
+    Logger.warn("[VintageNetQMI] try_to_configure_modem #{inspect(state)}")
+
     case Configuration.run_configurations(state.configuration, &try_run_configuration(&1, state)) do
       {:ok, updated_configuration} ->
         %{state | configuration: updated_configuration}
@@ -98,6 +100,8 @@ defmodule VintageNetQMI.Connection do
   end
 
   defp try_run_configuration(:roaming_preference, state) do
+    Logger.warn("[VintageNetQMI] try_run_configuration :roaming_preference #{inspect(state)}")
+
     NetworkAccess.set_system_selection_preference(state.qmi,
       roaming_preference: state.roaming_preference
     )
