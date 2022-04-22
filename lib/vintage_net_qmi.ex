@@ -119,6 +119,7 @@ defmodule VintageNetQMI do
       ) do
     normalized_config = normalize(config)
     radio_technologies_preference = normalized_config.vintage_net_qmi[:only_radio_technologies]
+    roaming = normalized_config.vintage_net_qmi[:roaming]
 
     up_cmds = [
       {:fun, QMI, :configure_linux, [ifname]}
@@ -138,7 +139,7 @@ defmodule VintageNetQMI do
          ifname: ifname,
          service_providers: normalized_config.vintage_net_qmi.service_providers,
          radio_technologies: radio_technologies_preference,
-         roaming: config.roaming
+         roaming: roaming
        ]},
       {VintageNetQMI.CellMonitor, [ifname: ifname]},
       {VintageNetQMI.SignalMonitor, [ifname: ifname]},
