@@ -137,7 +137,8 @@ defmodule VintageNetQMI do
        [
          ifname: ifname,
          service_providers: normalized_config.vintage_net_qmi.service_providers,
-         radio_technologies: radio_technologies_preference
+         radio_technologies: radio_technologies_preference,
+         roaming: config.roaming
        ]},
       {VintageNetQMI.CellMonitor, [ifname: ifname]},
       {VintageNetQMI.SignalMonitor, [ifname: ifname]},

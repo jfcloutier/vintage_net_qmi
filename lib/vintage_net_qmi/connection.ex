@@ -46,6 +46,7 @@ defmodule VintageNetQMI.Connection do
 
   @impl GenServer
   def init(args) do
+    Logger.warn("[VintageNetQMI] INIT CONNECTION #{inspect args}")
     ifname = Keyword.fetch!(args, :ifname)
     providers = Keyword.fetch!(args, :service_providers)
     radio_technologies = Keyword.get(args, :radio_technologies)
